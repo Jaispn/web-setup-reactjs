@@ -1,53 +1,44 @@
 /**
- * Created by jai on 04/06/17.
+ * Created by jai on 19/11/17.
  */
-import _ from "lodash";
-import request from "superagent";
 
-function _post(url, headers, data) {
-    return fetch(url,
-        {
-            method: "POST",
-            headers: headers,
-            body: _.isObject(data) ? JSON.stringify(data) : data,
+var FAILURE_COEFF = 10;
+var MAX_SERVER_LATENCY = 200;
 
-        })
+function getRandomBool(n) {
+    var maxRandomCoeff = 1000;
+    if (n > maxRandomCoeff) n = maxRandomCoeff;
+    return Math.floor(Math.random() * maxRandomCoeff) % n === 0;
 }
 
-function _get(url, header) {
-    return fetch(url, {
-        method: "GET",
-        header: header
-    })
-}
-
-function _put() {
-
-}
-
-function _delete() {
-
-}
-
-function _getHeaders() {
-    return {
-        'Content-Type': 'application/json',
-        'Access-Control-Request-Origin': "*",
-        // 'Access-Control-Request-Method': 'POST',
-        'Access-Control-Request-Headers': 'content-type'
+function getSuggestions(text) {
+    var pre = 'pre';
+    var post = 'post';
+    var results = [];
+    if (getRandomBool(2)) {
+        results.push(pre + text);
     }
+    if (getRandomBool(2)) {
+        results.push(text);
+    }
+    if (getRandomBool(2)) {
+        results.push(text + post);
+    }
+    if (getRandomBool(2)) {
+        results.push(pre + text + post);
+    }
+    return new Promise((resolve, reject) => {
+        var randomTimeout = Math.random() * MAX_SERVER_LATENCY;
+        setTimeout(() => {
+            if (getRandomBool(FAILURE_COEFF)) {
+                reject();
+            } else {
+                resolve(results);
+            }
+        }, randomTimeout);
+    });
 }
 
-function login(params, cb) {
-    request
-        .get("http://localhost:8080/login")
-        .query(params)
-        .end(cb)
-}
-
-// function login(data) {
-//     return fetch("http://192.168.1.106:8080/admin/login?email=jaiprakash@gmail.com&password=12345")
-// }
 module.exports = {
-    login: login
+    getSuggestions: getSuggestions
 }

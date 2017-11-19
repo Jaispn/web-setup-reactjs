@@ -1,41 +1,28 @@
-.container{
-  margin-top: 0 auto;
-}
 .input_type{
-  border-width: 2px;
+  border: 1px solid grey;
+  width: 100%;
+  padding: 5px;
 }
 .login-input {
-  top: 120px;
-  left: 300px;
   width: 300px;
   height: 200px;
-  border: 1px solid black;
-  border-radius:5px;
+  border-radius: 5px;
   margin: 0 auto;
 }
 
-.user-name{
-border: 0;
+.login-li {
+  width: 300px;
+  height: 20px;
+  margin: 0 auto;
 }
 
-.click-button{
-  padding:5px 5px;
-  margin-top: 15px;
-}
-
-.menu-tabs{
-  background-color: lightgray;
-  width: auto;
-  height: 35px;
-  font-family: inherit;
-  font-size: 20px;
-  margin-bottom: 30px;
+.login-ul {
+  width: 300px;
+  height: 125px;
+  border: 1px solid grey;
+  margin: 0 auto;
 }
 
 ul {
   list-style: none;
-}
-
-form{
-  margin: 0 auto;
 }

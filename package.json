@@ -1,5 +1,5 @@
 {
-  "name": "voluncia-web",
+  "name": "search-suggestions",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -35,17 +35,9 @@
     "precss": "^1.4.0",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
-    "react-redux": "^5.0.5",
-    "react-router": "^2.0.1",
-    "react-router-dom": "^4.1.1",
-    "redux": "^3.6.0",
-    "request-promise": "^4.2.1",
     "style-loader": "^0.13.1",
-    "superagent": "^3.5.2",
-    "url-loader": "^0.5.8",
     "webpack": "^1.13.2",
-    "webpack-dev-server": "^1.16.1",
-    "whatwg-fetch": "^2.0.3"
+    "webpack-dev-server": "^1.16.1"
   },
   "devDependencies": {
     "axios": "^0.16.1",

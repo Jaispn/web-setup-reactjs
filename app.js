@@ -1,42 +1,80 @@
 'use strict';
-// import  style from './css/main.scss';
 import React from 'react';
-import Login from './components/login/login';
-import Home from './components/home/home';
-import Headear from './components/header/header';
-import Users from './components/users/users';
-import suppliers from './components/suppliers/suppliers';
-import products from './components/products/products';
-import SessionService from "./services/session-service";
-import {Router, Route, Link, IndexRoute, hashHistory, browserHistory} from 'react-router';
+var httpService = require("./services/http-service");
 
 class App extends React.Component {
     constructor(props) {
         super(props);
-        this.isLoggedIn = this.isLoggedIn.bind(this);
+        this.state = {
+            data: [],
+            value: ''
+        }
     }
 
-    isLoggedIn() {
-        if (!SessionService.isLoggedIn()) {
-            browserHistory.push('#/login');
-            return false;
+    onChangeHandle(e) {
+        e.preventDefault();
+        let self = this;
+        if (this.refs.searchText.value) {
+            httpService.getSuggestions(this.refs.searchText.value)
+                .then(function (results) {
+                    return self.setState({data: results});
+                }).catch(function (err) {
+                return self.setState({data: []});
+            })
+        }else{
+            return self.setState({data: []});
         }
-        return true;
+    }
+
+    handleClick(e) {
+        e.preventDefault();
+        let value = e.currentTarget.innerText;
+        this.refs.searchText.value = value;
+        this.setState({data: []});
+
+    }
+
+    getDropdownList() {
+        var self = this;
+        if (this.state.data.length > 0) {
+            return (
+                <ul className="login-ul">
+                    {
+                        self.state.data.map((item, index) => (
+                            <li className="login-li" key={index} onClick={self.handleClick.bind(self)}>
+                                <span>
+                                    {item.search(self.refs.searchText.value) > 0 ?
+                                        item.substr(0, item.search(self.refs.searchText.value))
+                                        :
+                                        ""
+                                    }
+                                </span>
+                                <b>{self.refs.searchText.value}</b>
+                                <span>
+                                    {
+                                        item.search(self.refs.searchText.value) > 0 ?
+                                            item.substr(item.search(self.refs.searchText.value) + self.refs.searchText.value.length)
+                                            :
+                                            item.substr(self.refs.searchText.value.length)
+                                    }
+                            </span>
+                            </li>))
+                    }
+                </ul>
+            )
+        }
+
     }
 
     render() {
         return (
-            <div className="container">
-                {this.isLoggedIn() ? <Headear/> : <div></div>}
-                <Router history={hashHistory}>
-                    <Route path="/" component={Home}/>
-                    <Route path="/login" component={Login}/>
-                    <Route path="/users" component={Users}/>
-                    <Route path="/suppliers" component={suppliers}/>
-                    <Route path="/products" component={products}/>
-                </Router>
+            <div className="login-input">
+               Type here to get suggestions!!!
+                <input className="input_type" type="text" name="search" ref="searchText"
+                       onChange={this.onChangeHandle.bind(this)}/>
+                {this.getDropdownList.call(this)}
             </div>
-        )
+        );
     }
 }
 
